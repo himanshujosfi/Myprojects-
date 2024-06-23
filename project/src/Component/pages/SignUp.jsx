@@ -1,5 +1,9 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth'
 import React, { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { auth, db } from '../Firebase'
+import { setDoc, doc } from 'firebase/firestore'
+import { toast } from 'react-toastify'
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -7,13 +11,33 @@ const SignUp = () => {
         name: '',
         email: '',
         password: '',
-        conformPassword: ''
+        // conformPassword: ''
     })
-    console.log(formData)
-    const submitForm = () => { }
+    // console.log(formData)
+    const submitForm = async (e) => {
+        e.preventDefault()
+        const { email, password, name } = formData
+        try {
+            await createUserWithEmailAndPassword(auth, email, password)
+            const user = auth.currentUser
+            console.log(user)
+            if (user) {
+                await setDoc(doc(db, "Users", user.uid), {
+                    email: user.email,
+                    name: name,
+                })
+            }
+            // toast.success('User Registered sucessfully !'), {
+            //     position: 'top-right',
+            //     time: 1000
+            // }
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
     return (
         <div className='text-center mb-8 mt-8 w-8 bg-primary h-30 p-2 m-a'>
-            <h2>SignUp </h2>
+            <h2>Register </h2>
             <div>
                 <label htmlFor="">Name <span>*</span></label>
                 <input type="text" placeholder='Enter Name' value={formData?.name}
@@ -32,12 +56,12 @@ const SignUp = () => {
                     <input type="text" placeholder='Enter password' value={formData?.password}
                         onChange={(e) => setFormData(pre => ({ ...pre, password: e.target.value }))} />
                 </div>
-
+                {/* 
                 <div>
                     <label htmlFor="">Conform Password <span>*</span></label>
                     <input type="text" placeholder='Conform password' value={formData?.conformPassword}
                         onChange={(e) => setFormData(pre => ({ ...pre, conformPassword: e.target.value }))} />
-                </div>
+                </div> */}
             </div>
             <div className='mt-5'>
                 <button className='mr-5' onClick={submitForm}>SignIn</button>

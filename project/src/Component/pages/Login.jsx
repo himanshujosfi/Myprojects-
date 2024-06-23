@@ -1,14 +1,32 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { auth } from '../Firebase'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { toast } from 'react-toastify'
 
 const Login = () => {
+    const naviagte = useNavigate()
     const [formData, setFormData] = useState({
         email: "",
         password: ""
     }
     )
     const navigate = useNavigate()
-    const handleLogin = () => { }
+    const handleLogin = async (e) => {
+        e.preventDefault()
+        const { email, password } = formData
+        try {
+            await signInWithEmailAndPassword(auth, email, password)
+            console.log('sucesss')
+            navigate('/dashboard')
+            // toast.success('Login Sucessfully !'), {
+            //     position: 'top-left'
+            // }
+        } catch (error) {
+            console.log(error.message)
+            // toast.success(error.message)
+        }
+    }
     return (
         <div className='text-center mb-8 mt-8 w-8 bg-primary h-30 p-2 m-auto  '>
             <h3>Welcome Into</h3>
