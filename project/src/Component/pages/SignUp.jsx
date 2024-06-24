@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../Firebase'
 import { setDoc, doc } from 'firebase/firestore'
 import { toast } from 'react-toastify'
+import SignInWithEmail from './SignInWithEmail'
 
 const SignUp = () => {
     const navigate = useNavigate()
@@ -66,6 +67,9 @@ const SignUp = () => {
             <div className='mt-5'>
                 <button className='mr-5' onClick={submitForm}>SignIn</button>
                 <button onClick={() => navigate(-1)}>Login</button>
+            </div>
+            <div>
+                <SignInWithEmail />
             </div>
         </div>
     )

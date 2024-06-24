@@ -2,10 +2,9 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth } from '../Firebase'
 import { signInWithEmailAndPassword } from 'firebase/auth'
-import { toast } from 'react-toastify'
+import SignInWithEmail from './SignInWithEmail'
 
 const Login = () => {
-    const naviagte = useNavigate()
     const [formData, setFormData] = useState({
         email: "",
         password: ""
@@ -47,6 +46,9 @@ const Login = () => {
             </div>
             <button onClick={handleLogin}>Login</button>
             <button className='' onClick={() => navigate("/signin")}>Sign In </button>
+            <div>
+                <SignInWithEmail />
+            </div>
         </div>
     )
 }

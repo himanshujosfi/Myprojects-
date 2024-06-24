@@ -12,7 +12,7 @@ const Dasboard = () => {
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
                 setFormData(docSnap.data());
-                console.log(docSnap.data());
+                // console.log(docSnap.data());
             } else {
                 console.log('No such document!');
             }
@@ -41,6 +41,9 @@ const Dasboard = () => {
             {formData ? (
                 <div>
                     {formData.email}
+                    <div>
+                        {formData.photo}
+                    </div>
                     <div>
                         <button onClick={handleLogOut}>LogOut</button>
                     </div>
