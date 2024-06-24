@@ -39,18 +39,21 @@ const Dasboard = () => {
     return (
         <div>
             {formData ? (
-                <div>
-                    {formData.email}
+                <div className='flex gap-8 bg-primary '>
+                    <div>Logo</div>
                     <div>
-                        {formData.photo}
+                        <img src={formData.photo} alt="" />
+                        {formData.email}
                     </div>
                     <div>
                         <button onClick={handleLogOut}>LogOut</button>
                     </div>
                 </div>
+
             ) : (
                 <div>Loading...</div>
             )}
+            <div>Test</div>
         </div>
     );
 }
