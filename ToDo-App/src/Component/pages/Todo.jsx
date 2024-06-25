@@ -12,24 +12,56 @@ const getLocalData = () => {
 const Todo = () => {
     const [todo, setTodo] = useState('');
     const [todos, setTodos] = useState(getLocalData());
+    const [toogleIcons, setToggleIcons] = useState(true)
+    const [editData, setEditData] = useState(null)
 
     const generateId = () => {
         return '_' + Math.random().toString(36).substr(2, 9);
     };
 
     const handleClick = () => {
-        if (todo.trim() !== "") {
+        if (!todo) {
+            alert('Please enter text');
+            return;
+        }
+
+        if (toogleIcons) {
+            // Add new todo
             const newTodo = { id: generateId(), text: todo };
             setTodos([...todos, newTodo]);
-            setTodo('');
-            console.log(todos);
+        } else {
+            // Edit existing todo
+            setTodos(
+                todos.map((val) => {
+                    if (val.id === editData) {
+                        return { ...val, text: todo };
+                    }
+                    return val;
+                })
+            );
+            setToggleIcons(true);
+            setEditData(null);
+        }
+
+        setTodo('');
+    };
+
+    const handleEdit = (id) => {
+        const editItem = todos.find((val) => val.id === id);
+        if (editItem) {
+            setTodo(editItem.text);  // Set the text to edit
+            setToggleIcons(false);   // Switch to edit mode
+            setEditData(id);         // Set the ID of the item being edited
         }
     };
+
+
+
     const handleDelete = () => {
         setTodos([]);
     };
-    const deleteHandle = (id) => {
-        setTodos(todos.filter((todo) => todo.id !== id))
+    const deleteHandle = (index) => {
+        setTodos(todos.filter((elem) => index !== elem.id))
     }
     useEffect(() => {
         localStorage.setItem('todo', JSON.stringify(todos))
@@ -48,7 +80,15 @@ const Todo = () => {
                             value={todo}
                             onChange={(e) => setTodo(e.target.value)}
                             aria-describedby="username-help" />
-                        <Button icon="pi pi-check " className='surface-900' onClick={handleClick} />
+                        {
+
+                            <Button
+                                icon={toogleIcons ? "pi pi-check" : "pi pi-plus"}
+                                className='surface-900'
+                                onClick={handleClick}
+                            />
+                        }
+
                     </div>
                     {
                         todos.length > 0 && (
@@ -57,7 +97,7 @@ const Todo = () => {
                                     <li key={item.id} className='text-color surface-900 border-round list-none mt-2 flex justify-content-between align-items-center'>
                                         <span className='mr-3 ml-3 text-white-alpha-100'>{item.text}</span>
                                         <div className='flex'>
-                                            <p className='pi pi-plus text-end mr-4 cursor-pointer text-primary'></p>
+                                            <p className='pi pi-plus text-end mr-4 cursor-pointer text-primary' onClick={() => handleEdit(item.id)}></p>
                                             <p className='pi pi-times cursor-pointer mr-3 text-red-700' onClick={() => deleteHandle(item.id)}></p>
                                         </div>
                                     </li>
