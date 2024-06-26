@@ -7,7 +7,6 @@ const Newsign = () => {
     const signRef = useRef(null)
     const [sign, setSign] = useState(null)
 
-    const validate = () => { }
 
     const clearHandle = () => {
         signRef.current.clear()
@@ -20,8 +19,8 @@ const Newsign = () => {
     const downloadHandle = () => {
         if (sign) {
             const link = document.createElement('a')
-            link.href = setSign
-            link.download = "signature.jpg"
+            link.href = sign
+            link.download = "signature.png"
             link.click()
         }
         else (
