@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { auth, db } from '../Firebase'
 import { setDoc, doc } from 'firebase/firestore'
@@ -12,17 +12,22 @@ const SignPages = () => {
         email: "",
         password: ""
     })
+    const newState = {
+        username: "",
+        email: "",
+        password: ""
+    }
     const handleRegister = () => {
         const { email, password, username } = registers
         try {
             createUserWithEmailAndPassword(auth, email, password)
             const user = auth.currentUser
-            console.log(user)
+            // console.log(user)
             if (user) {
                 setDoc(doc(db, "NewUsers", user.uid), {
                     username: username,
                     email: user.email,
-                    password: password
+                    // password: password
                 })
             }
             console.log('User Registered SucessFully')
@@ -30,6 +35,11 @@ const SignPages = () => {
             console.log(error.message)
         }
     };
+    // useEffect(() => {
+    //     if (id) {
+    //         setRegister(newState)
+    //     }
+    // })
     return (
         <div className="login-container">
             <div className="login-box">
@@ -49,7 +59,10 @@ const SignPages = () => {
                     </div>
                     <div className="actions mt-4">
                         <button className="login-btn" onClick={handleRegister} >Register</button>
-                        <button className="login-btn" onClick={() => navigate('/login')}>Login</button>
+                    </div>
+                    <div className='flex'>
+                        <p className='mt-5'><span className='mr-5'>Already have an account ?</span></p>
+                        <button className="login mt-3" onClick={() => navigate('/login')}>Login</button>
                     </div>
 
                 </div>

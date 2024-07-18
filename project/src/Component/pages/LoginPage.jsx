@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../Firebase';
+import SignInWithEmail from './SignInWithEmail';
 
 
 const LoginPage = () => {
@@ -43,7 +44,7 @@ const LoginPage = () => {
                 </div>
 
                 <div className="social-login mt-6">
-                    <button type="submit" className="login-btn">Or Sign Up Using Gmail</button>
+                    <button type="submit" className="login-btn">{<SignInWithEmail />}</button>
                 </div>
             </div>
         </div>
